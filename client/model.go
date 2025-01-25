@@ -1,8 +1,8 @@
 package client
 
 import (
-	"bot/client/Message"
 	"github.com/gorilla/websocket"
+	"github.com/xww2652008969/wbot/client/Message"
 	"net/http"
 )
 

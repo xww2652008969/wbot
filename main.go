@@ -1,9 +1,9 @@
 package main
 
 import (
-	"bot/client"
-	"bot/client/Message"
 	"fmt"
+	"github.com/xww2652008969/wbot/client"
+	"github.com/xww2652008969/wbot/client/Message"
 )
 
 func main() {

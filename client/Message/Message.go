@@ -1,9 +1,9 @@
 package Message
 
 import (
-	"bot/client/utils"
 	"bytes"
 	"encoding/json"
+	"github.com/xww2652008969/wbot/client/utils"
 	"strconv"
 )
 
