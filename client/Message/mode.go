@@ -14,22 +14,15 @@ type Message struct {
 		Card     string `json:"card"`
 		Role     string `json:"role"`
 	} `json:"sender"`
-	RawMessage string `json:"raw_message"`
-	Font       int    `json:"font"`
-	SubType    string `json:"sub_type"`
-	Message    []struct {
-		Type string `json:"type"`
-		Data struct {
-			Qq   string `json:"qq"`
-			Name string `json:"name"`
-			Text string `json:"text"`
-		} `json:"data"`
-	} `json:"message"`
+	RawMessage    string `json:"raw_message"`
+	Font          int    `json:"font"`
+	SubType       string `json:"sub_type"`
+	Message       []upd  `json:"message"`
 	MessageFormat string `json:"message_format"`
 	PostType      string `json:"post_type"`
 	GroupId       int64  `json:"group_id"`
 	Httpclient    string `json:"_"`
-	updata        []upd  `json:"_"`
+	updata        []upd
 }
 
 type upd struct {
@@ -45,7 +38,18 @@ type upd struct {
 
 type uPMessage struct {
 	Group_id string `json:"group_id"`
+	UserId   string `json:"user_id"`
 	Message  []upd  `json:"message"`
 }
 
 type MessageEvent func(message Message)
+type gpokeData struct {
+	GroupId int64 `json:"group_id"`
+	UserId  int64 `json:"user_id"`
+}
+type ppokedata struct {
+	UserId int64 `json:"user_id"`
+}
+type deletemsgdata struct {
+	MessageId int64 `json:"message_id"`
+}

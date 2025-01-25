@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/xww2652008969/wbot/client"
 	"github.com/xww2652008969/wbot/client/Message"
 )
@@ -29,16 +28,13 @@ func main() {
 }
 func te1() Message.MessageEvent {
 	return func(message Message.Message) {
-		fmt.Println("执行了 群聊")
-		message.AddText("aa").AddText("aaa")
-		message.SendGroupMsg(message.GroupId)
-		message.AddText("第二次")
-		message.SendGroupMsg(message.GroupId, false)
-		message.AddText("清空了").SendGroupMsg(message.GroupId)
+		if message.RawMessage == "撤回" {
+			message.DeleMsg(message.MessageId)
+		}
 	}
 }
 func te2() Message.MessageEvent {
 	return func(message Message.Message) {
-		fmt.Print("执行了 私聊")
+		message.SendPrivatepoke(message.UserId)
 	}
 }
