@@ -25,11 +25,11 @@ func main() {
 }
 func te1() Message.Event {
 	return func(message Message.Message) {
-		message.GetGroupNemberInfo(message.GroupId, message.UserId)
+		message.AddText("测试群私聊的")
+		message.SendGPrivateMsg(3555202423)
 	}
 }
 func te2() Message.Event {
 	return func(message Message.Message) {
-		message.SendPrivatepoke(message.UserId)
 	}
 }

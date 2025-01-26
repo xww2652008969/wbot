@@ -146,6 +146,30 @@ func (m *Message) SendPrivateMsg(id int64, clean ...bool) {
 	m.updata = nil
 }
 
+// SendGPrivateMsg 发送群私聊信息
+func (m *Message) SendGPrivateMsg(id int64, clean ...bool) {
+	var u uPMessage
+	if m.GroupId != 0 {
+		fmt.Println("不要乱调用谢谢")
+		return
+	}
+	u.Group_id = strconv.FormatInt(m.GroupId, 10)
+	u.UserId = strconv.FormatInt(id, 10)
+	u.Message = m.updata
+	a, _ := json.Marshal(u)
+	res, err := utils.Httppost(m.Httpclient+"/send_private_msg", nil, bytes.NewBuffer(a))
+	if err != nil {
+		fmt.Println(err)
+	}
+	d, _ := io.ReadAll(res.Body)
+	fmt.Println(string(d))
+	if len(clean) > 0 && !clean[0] {
+
+		return
+	}
+	m.updata = nil
+}
+
 // SendGrouppoke 戳戳群成员
 func (m *Message) SendGrouppoke(groupid int64, userid int64) {
 	p := gpokeData{
