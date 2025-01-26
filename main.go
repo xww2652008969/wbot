@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/xww2652008969/wbot/MessageType"
 	"github.com/xww2652008969/wbot/client"
 	"github.com/xww2652008969/wbot/client/Message"
@@ -26,7 +25,7 @@ func main() {
 }
 func te1() Message.Event {
 	return func(message Message.Message) {
-		fmt.Println("群")
+		message.GetGroupNemberInfo(message.GroupId, message.UserId)
 	}
 }
 func te2() Message.Event {
