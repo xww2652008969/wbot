@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gorilla/websocket"
+	"github.com/xww2652008969/wbot/MessageType"
+	"github.com/xww2652008969/wbot/client/Message"
 )
 
 func Create(config Clientconfig) (Client, error) {
@@ -36,30 +38,35 @@ func (c *Client) postevent() {
 		switch c.Message.MessageType {
 		case "group":
 			a := Clientevent{
-				Eventtype: Group,
+				Eventtype: MessageType.Group,
 				Message:   c.Message,
 			}
 			c.sendevent(a)
 		case "private":
 			a := Clientevent{
-				Eventtype: Private,
+				Eventtype: MessageType.Private,
 				Message:   c.Message,
 			}
 			c.sendevent(a)
 		}
-
+	case "notice":
+		a := Clientevent{
+			Eventtype: MessageType.Notice,
+			Message:   c.Message,
+		}
+		c.sendevent(a)
 	}
 }
 func (c *Client) sendevent(clientevent Clientevent) {
 	for _, v := range c.EvebtFun {
-		for i := 0; i < len(v.Event); i++ {
-			if clientevent.Eventtype == v.Event[i] {
-				go v.Func[i](clientevent.Message)
-				fmt.Print("执行了某函数")
-			}
+		if clientevent.Eventtype == v.Event {
+			go v.Func(clientevent.Message)
 		}
 	}
 }
-func (c Client) Te() {
-	fmt.Print("嘻嘻")
+func (c *Client) Register(event int, f Message.Event) {
+	var d Eventfunc
+	d.Event = event
+	d.Func = f
+	c.EvebtFun = append(c.EvebtFun, d)
 }

@@ -9,6 +9,7 @@ import (
 	"strconv"
 )
 
+// 提供用于处理发送信息的api
 // AddText 添加string文本
 func (m *Message) AddText(text string) *Message {
 	var da upd

@@ -25,11 +25,6 @@ type Clientevent struct {
 }
 
 type Eventfunc struct {
-	Func  []Message.MessageEvent
-	Event []int
+	Func  Message.Event
+	Event int
 }
-
-const (
-	Group   = 1
-	Private = 2
-)

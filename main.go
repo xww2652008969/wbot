@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"github.com/xww2652008969/wbot/MessageType"
 	"github.com/xww2652008969/wbot/client"
 	"github.com/xww2652008969/wbot/client/Message"
 )
@@ -16,24 +18,18 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	var f client.Eventfunc
-	f.Event = append(f.Event, client.Group)
-	f.Func = append(f.Func, te1())
-	f.Event = append(f.Event, client.Private)
-	f.Func = append(f.Func, te2())
-	c.EvebtFun = append(c.EvebtFun, f)
+	c.Register(MessageType.Group, te1())
+	c.Register(MessageType.Private, te2())
 	c.Run()
 	select {}
 
 }
-func te1() Message.MessageEvent {
+func te1() Message.Event {
 	return func(message Message.Message) {
-		if message.RawMessage == "撤回" {
-			message.DeleMsg(message.MessageId)
-		}
+		fmt.Println("群")
 	}
 }
-func te2() Message.MessageEvent {
+func te2() Message.Event {
 	return func(message Message.Message) {
 		message.SendPrivatepoke(message.UserId)
 	}
