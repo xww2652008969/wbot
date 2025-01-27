@@ -24,7 +24,7 @@ func (c *Client) Run() {
 		err := c.Ws.ReadJSON(&c.Message)
 		if err != nil {
 			fmt.Print(err)
-			return
+			continue
 		}
 		c.Message.Httpclient = c.Config.Clienthttp
 		c.postevent()
