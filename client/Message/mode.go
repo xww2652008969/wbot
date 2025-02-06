@@ -153,3 +153,14 @@ type groupMemberInfo struct {
 	Wording string      `json:"wording"`
 	Echo    interface{} `json:"echo"`
 }
+type MsgInfo struct {
+	Status  string      `json:"status"`
+	Retcode int         `json:"retcode"`
+	Data    Message     `json:"data"`
+	Message string      `json:"message"`
+	Wording string      `json:"wording"`
+	Echo    interface{} `json:"echo"`
+}
+type MsgInforeq struct {
+	MessageId int `json:"message_id"`
+}

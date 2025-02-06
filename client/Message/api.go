@@ -58,3 +58,15 @@ func (m *Message) GetGroupNemberInfo(groupid, user int64) (groupMemberInfo, erro
 	json.Unmarshal(data, &g)
 	return g, nil
 }
+func (m *Message) GetMsginfo(msgid int) (MsgInfo, error) {
+	var g MsgInfo
+	req := MsgInforeq{MessageId: msgid}
+	d, _ := json.Marshal(req)
+	res, err := utils.Httppost(m.Httpclient+"/get_msg_info", nil, bytes.NewBuffer(d))
+	if err != nil {
+		return g, err
+	}
+	data, _ := io.ReadAll(res.Body)
+	json.Unmarshal(data, &g)
+	return g, nil
+}
