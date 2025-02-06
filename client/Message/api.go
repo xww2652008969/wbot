@@ -25,8 +25,8 @@ func (m *Message) SendLike(id int64, times int) *Message {
 }
 
 // GetGroupMemberList 返回群成员列表
-func (m *Message) GetGroupMemberList(id int64) (groupMemberList, error) {
-	var g groupMemberList
+func (m *Message) GetGroupMemberList(id int64) (GroupMemberList, error) {
+	var g GroupMemberList
 	req := reqGroupMemberList{
 		GroupId: id,
 		NoCache: false,

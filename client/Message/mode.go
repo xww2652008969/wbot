@@ -82,33 +82,36 @@ type sendlikedata struct {
 }
 
 // 处理获得群成员信息的列表
-type groupMemberList struct {
-	Status  string `json:"status"`
-	Retcode int    `json:"retcode"`
-	Data    []struct {
-		GroupId         int    `json:"group_id"`
-		UserId          int64  `json:"user_id"`
-		Nickname        string `json:"nickname"`
-		Card            string `json:"card"`
-		Sex             string `json:"sex"`
-		Age             int    `json:"age"`
-		Area            string `json:"area"`
-		Level           string `json:"level"`
-		QqLevel         int    `json:"qq_level"`
-		JoinTime        int    `json:"join_time"`
-		LastSentTime    int    `json:"last_sent_time"`
-		TitleExpireTime int    `json:"title_expire_time"`
-		Unfriendly      bool   `json:"unfriendly"`
-		CardChangeable  bool   `json:"card_changeable"`
-		IsRobot         bool   `json:"is_robot"`
-		ShutUpTimestamp int    `json:"shut_up_timestamp"`
-		Role            string `json:"role"`
-		Title           string `json:"title"`
-	} `json:"data"`
-	Message string      `json:"message"`
-	Wording string      `json:"wording"`
-	Echo    interface{} `json:"echo"`
+type GroupMemberList struct {
+	Status  string              `json:"status"`
+	Retcode int                 `json:"retcode"`
+	Data    GroupMemberListData `json:"data"`
+	Message string              `json:"message"`
+	Wording string              `json:"wording"`
+	Echo    interface{}         `json:"echo"`
 }
+
+type GroupMemberListData struct {
+	GroupId         int    `json:"group_id"`
+	UserId          int64  `json:"user_id"`
+	Nickname        string `json:"nickname"`
+	Card            string `json:"card"`
+	Sex             string `json:"sex"`
+	Age             int    `json:"age"`
+	Area            string `json:"area"`
+	Level           string `json:"level"`
+	QqLevel         int    `json:"qq_level"`
+	JoinTime        int    `json:"join_time"`
+	LastSentTime    int    `json:"last_sent_time"`
+	TitleExpireTime int    `json:"title_expire_time"`
+	Unfriendly      bool   `json:"unfriendly"`
+	CardChangeable  bool   `json:"card_changeable"`
+	IsRobot         bool   `json:"is_robot"`
+	ShutUpTimestamp int    `json:"shut_up_timestamp"`
+	Role            string `json:"role"`
+	Title           string `json:"title"`
+}
+
 type reqGroupMemberList struct {
 	GroupId int64 `json:"group_id"`
 	NoCache bool  `json:"no_cache"`

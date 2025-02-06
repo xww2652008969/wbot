@@ -23,7 +23,6 @@ func (c *Client) Run() {
 	for {
 		err := c.Ws.ReadJSON(&c.Message)
 		if err != nil {
-			fmt.Print(err)
 			continue
 		}
 		c.Message.Httpclient = c.Config.Clienthttp
