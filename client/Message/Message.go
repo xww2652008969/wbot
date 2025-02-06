@@ -45,7 +45,7 @@ func (m *Message) AddImage(url string) *Message {
 func (m *Message) AddFace(id int) *Message {
 	var da upd
 	da.Type = "face"
-	da.Data.Id = id
+	da.Data.Id = strconv.Itoa(id)
 	m.updata = append(m.updata, da)
 	return m
 }
@@ -78,7 +78,7 @@ func (m *Message) AddVideo(url string) *Message {
 func (m *Message) Addreply(id int64) *Message {
 	var da upd
 	da.Type = "reply"
-	da.Data.Id = int(id)
+	da.Data.Id = strconv.Itoa(int(id))
 	m.updata = append([]upd{da}, m.updata...)
 	return m
 }
@@ -87,7 +87,7 @@ func (m *Message) Addreply(id int64) *Message {
 func (m *Message) AddMusicCard(t string, id int) *Message {
 	var da upd
 	da.Type = "music"
-	da.Data.Id = id
+	da.Data.Id = strconv.Itoa(id)
 	da.Type = t
 	m.updata = append(m.updata, da)
 	return m

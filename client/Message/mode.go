@@ -47,7 +47,7 @@ type upd struct {
 		Name      string `json:"name"`
 		Text      string `json:"text"`
 		File      string `json:"file"`
-		Id        int    `json:"id"`
+		Id        string `json:"id"`
 		Url       string `json:"url"`
 		Sub_type  int    `json:"sub_Type"`
 		File_size string `json:"file_Size"`

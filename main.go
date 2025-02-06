@@ -8,10 +8,10 @@ import (
 
 func main() {
 	config := client.Clientconfig{
-		Wsurl:      "ws://127.0.0.1",
+		Wsurl:      "ws://192.168.10.209",
 		Wspost:     "3001",
 		Wsheader:   nil,
-		Clienthttp: "http://127.0.0.1:4000",
+		Clienthttp: "http://192.168.10.209:4000",
 	}
 	c, err := client.Create(config)
 	if err != nil {
