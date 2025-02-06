@@ -43,11 +43,14 @@ type Message struct {
 type upd struct {
 	Type string `json:"type"`
 	Data struct {
-		Qq   string `json:"qq"`
-		Name string `json:"name"`
-		Text string `json:"text"`
-		File string `json:"file"`
-		Id   int    `json:"id"`
+		Qq        string `json:"qq"`
+		Name      string `json:"name"`
+		Text      string `json:"text"`
+		File      string `json:"file"`
+		Id        int    `json:"id"`
+		Url       string `json:"url"`
+		Sub_type  int    `json:"sub_Type"`
+		File_size string `json:"file_Size"`
 	} `json:"data"`
 }
 
