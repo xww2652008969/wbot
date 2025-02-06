@@ -83,12 +83,12 @@ type sendlikedata struct {
 
 // 处理获得群成员信息的列表
 type GroupMemberList struct {
-	Status  string              `json:"status"`
-	Retcode int                 `json:"retcode"`
-	Data    GroupMemberListData `json:"data"`
-	Message string              `json:"message"`
-	Wording string              `json:"wording"`
-	Echo    interface{}         `json:"echo"`
+	Status  string                `json:"status"`
+	Retcode int                   `json:"retcode"`
+	Data    []GroupMemberListData `json:"data"`
+	Message string                `json:"message"`
+	Wording string                `json:"wording"`
+	Echo    interface{}           `json:"echo"`
 }
 
 type GroupMemberListData struct {
