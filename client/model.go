@@ -15,10 +15,11 @@ const (
 type Client struct {
 	Config   Clientconfig
 	Ws       *websocket.Conn
-	Message  Message
-	EvebtFun []Eventfunc //
-	log      *log.Logger
-	updata   []upd
+	Message  Message     //接受到的消息
+	EvebtFun []Eventfunc //事件总线
+	pushfunc []Push
+	log      *log.Logger //log
+	updata   []upd       //处理发送消息的
 }
 type Clientconfig struct {
 	Wsurl      string
@@ -73,3 +74,4 @@ type Eventfunc struct {
 }
 
 type Event func(client Client, message Message)
+type Push func(client Client)

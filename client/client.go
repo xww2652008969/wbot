@@ -20,12 +20,21 @@ func New(config Clientconfig) (Client, error) {
 	return client, nil
 }
 func (c *Client) Run() {
+	go c.cron()
 	for {
 		err := c.Ws.ReadJSON(&c.Message)
 		if err != nil {
 			continue
 		}
 		c.postevent()
+	}
+	select {}
+}
+
+// cron 用于定时执行某些程序用于推送
+func (c *Client) cron() {
+	for _, v := range c.pushfunc {
+		go v(*c)
 	}
 }
 
@@ -81,4 +90,8 @@ func (c *Client) RegisterNoticeHandle(f Event) {
 	d.Event = MessageNotice
 	d.Func = f
 	c.EvebtFun = append(c.EvebtFun, d)
+}
+
+func (c *Client) RegisterPush(f Push) {
+	c.pushfunc = append(c.pushfunc, f)
 }

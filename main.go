@@ -15,20 +15,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	c.RegisterPrivateHandle(Te())
+	c.RegisterPush(te())
 	c.Run()
 	select {}
 
 }
-func Te() client.Event {
-	return func(c client.Client, message client.Message) {
-		c.AddText("qqqqq")
-		c.SendPrivateMsg(message.UserId)
-	}
-}
-func Te2() client.Event {
-	return func(c client.Client, message client.Message) {
-		c.AddText("www")
-		c.SendGroupMsg(message.GroupId)
+func te() client.Push {
+	return func(client client.Client) {
+		client.AddText("主动执行")
+		client.SendPrivateMsg(1271701079)
 	}
 }
