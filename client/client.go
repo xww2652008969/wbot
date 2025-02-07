@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func Create(config Clientconfig) (Client, error) {
+func New(config Clientconfig) (Client, error) {
 	var client Client
 	con, _, err := websocket.DefaultDialer.Dial(config.Wsurl+":"+config.Wspost, config.Wsheader)
 	if err != nil {
