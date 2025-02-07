@@ -1,10 +1,22 @@
-package main
+# Wbot
 
-import (
-	"fmt"
-	"github.com/xww2652008969/wbot/client"
-)
+适用于NapCat框架qqbot sdk
 
+## Getting Started
+
+```bash
+go get github.com/xww2652008969/wbot
+```
+
+### UsageAndExamples
+
+导入到你的项目中
+
+```
+import "github.com/xww2652008969/wbot"
+```
+
+```go
 func main() {
 	config := client.Clientconfig{
 		Wsurl:      "ws://192.168.10.209",
@@ -40,3 +52,11 @@ func te3() client.Event {
 		client.SendPrivateMsg(1271701079)
 	}
 }
+```
+
+更多详细参考
+
+可以查考
+
+[api]: https://apifox.com/apidoc/shared-c3bab595-b4a3-429b-a873-cbbe6b9a1f6a/5430207m0
+
