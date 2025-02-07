@@ -58,5 +58,5 @@ func te3() client.Event {
 
 可以查考
 
-[api]: https://apifox.com/apidoc/shared-c3bab595-b4a3-429b-a873-cbbe6b9a1f6a/5430207m0
+[api]: https://apifox.com/apidoc/shared-c3bab595-b4a3-429b-a873-cbbe6b9a1f6a/5430207m0	"api"
 
