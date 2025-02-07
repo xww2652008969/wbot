@@ -1,9 +1,7 @@
 package main
 
 import (
-	"github.com/xww2652008969/wbot/MessageType"
 	"github.com/xww2652008969/wbot/client"
-	"github.com/xww2652008969/wbot/client/Message"
 )
 
 func main() {
@@ -13,23 +11,24 @@ func main() {
 		Wsheader:   nil,
 		Clienthttp: "http://192.168.10.209:4000",
 	}
-	c, err := client.Create(config)
+	c, err := client.New(config)
 	if err != nil {
 		panic(err)
 	}
-	c.Register(MessageType.Group, te1())
-	c.Register(MessageType.Private, te2())
+	c.RegisterPrivateHandle(Te())
 	c.Run()
 	select {}
 
 }
-func te1() Message.Event {
-	return func(message Message.Message) {
-		message.AddText("测试群私聊的")
-		message.SendGPrivateMsg(3555202423)
+func Te() client.Event {
+	return func(c client.Client, message client.Message) {
+		c.AddText("qqqqq")
+		c.SendPrivateMsg(message.UserId)
 	}
 }
-func te2() Message.Event {
-	return func(message Message.Message) {
+func Te2() client.Event {
+	return func(c client.Client, message client.Message) {
+		c.AddText("www")
+		c.SendGroupMsg(message.GroupId)
 	}
 }
