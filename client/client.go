@@ -4,8 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gorilla/websocket"
-	"github.com/xww2652008969/wbot/MessageType"
-	"github.com/xww2652008969/wbot/client/Message"
+	"log"
 )
 
 func Create(config Clientconfig) (Client, error) {
@@ -17,6 +16,7 @@ func Create(config Clientconfig) (Client, error) {
 	}
 	client.Ws = con
 	client.Config = config
+	client.log = log.Default()
 	return client, nil
 }
 func (c *Client) Run() {
@@ -25,7 +25,6 @@ func (c *Client) Run() {
 		if err != nil {
 			continue
 		}
-		c.Message.Httpclient = c.Config.Clienthttp
 		c.postevent()
 	}
 }
@@ -37,35 +36,49 @@ func (c *Client) postevent() {
 		switch c.Message.MessageType {
 		case "group":
 			a := Clientevent{
-				Eventtype: MessageType.Group,
+				Eventtype: MessageGroup,
 				Message:   c.Message,
 			}
-			c.sendevent(a)
+			sendevent(*c, a)
 		case "private":
 			a := Clientevent{
-				Eventtype: MessageType.Private,
+				Eventtype: MessagePrivate,
 				Message:   c.Message,
 			}
-			c.sendevent(a)
+			sendevent(*c, a)
 		}
 	case "notice":
 		a := Clientevent{
-			Eventtype: MessageType.Notice,
+			Eventtype: MessageNotice,
 			Message:   c.Message,
 		}
-		c.sendevent(a)
+		sendevent(*c, a)
 	}
 }
-func (c *Client) sendevent(clientevent Clientevent) {
-	for _, v := range c.EvebtFun {
+func sendevent(client Client, clientevent Clientevent) {
+	for _, v := range client.EvebtFun {
 		if clientevent.Eventtype == v.Event {
-			go v.Func(clientevent.Message)
+			go v.Func(client, clientevent.Message)
 		}
 	}
 }
-func (c *Client) Register(event int, f Message.Event) {
+
+// too  修改为传入event
+func (c *Client) RegisterGroupHandle(f Event) {
 	var d Eventfunc
-	d.Event = event
+	d.Event = MessageGroup
+	d.Func = f
+	c.EvebtFun = append(c.EvebtFun, d)
+}
+func (c *Client) RegisterPrivateHandle(f Event) {
+	var d Eventfunc
+	d.Event = MessagePrivate
+	d.Func = f
+	c.EvebtFun = append(c.EvebtFun, d)
+}
+func (c *Client) RegisterNoticeHandle(f Event) {
+	var d Eventfunc
+	d.Event = MessageNotice
 	d.Func = f
 	c.EvebtFun = append(c.EvebtFun, d)
 }
