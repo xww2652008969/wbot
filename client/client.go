@@ -25,12 +25,10 @@ func (c *Client) Run() {
 	go c.cron()
 	go c.postevent()
 	for {
-		fmt.Println("sasa")
 		err := c.Ws.ReadJSON(&c.Message)
 		if err != nil {
 			continue
 		}
-		fmt.Println("添加了消息")
 		c.messageChan <- *c
 	}
 }
@@ -46,8 +44,6 @@ func (c *Client) cron() {
 func (c *Client) postevent() {
 
 	for m := range c.messageChan {
-		fmt.Println(m.Message.PostType)
-		fmt.Println(m.Message.MessageType)
 		switch m.Message.PostType {
 		case "message":
 			switch m.Message.MessageType {
@@ -76,10 +72,9 @@ func (c *Client) postevent() {
 
 func sendevent(client Client, clientevent Clientevent) {
 	var wg sync.WaitGroup // 创建 WaitGroup
-
 	for _, v := range client.EvebtFun {
 		if clientevent.Eventtype == v.Event {
-			wg.Add(1)              // 增加 WaitGroup 计数
+			wg.Add(1) // 增加 WaitGroup 计数
 			go func(f Eventfunc) { // 使用闭包捕获 EventFunc
 				defer wg.Done()                     // 确保在函数结束时调用 Done
 				f.Func(client, clientevent.Message) // 调用事件处理函数
