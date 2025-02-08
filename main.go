@@ -20,7 +20,6 @@ func main() {
 	c.RegisterGroupHandle(te2())
 	c.RegisterPrivateHandle(te3())
 	c.Run()
-
 }
 func te() client.Push {
 	return func(client client.Client) {
@@ -35,7 +34,7 @@ func te2() client.Event {
 }
 func te3() client.Event {
 	return func(client client.Client, message client.Message) {
-		fmt.Println("触发了消息")
+		fmt.Println(message)
 		client.AddText("这是私聊事件")
 		client.SendPrivateMsg(1271701079)
 	}

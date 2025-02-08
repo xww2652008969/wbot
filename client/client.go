@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gorilla/websocket"
 	"log"
+	"sync"
 )
 
 func New(config Clientconfig) (Client, error) {
@@ -17,18 +18,21 @@ func New(config Clientconfig) (Client, error) {
 	client.Ws = con
 	client.Config = config
 	client.log = log.Default()
+	client.messageChan = make(chan Client, 10)
 	return client, nil
 }
 func (c *Client) Run() {
 	go c.cron()
+	go c.postevent()
 	for {
+		fmt.Println("sasa")
 		err := c.Ws.ReadJSON(&c.Message)
 		if err != nil {
 			continue
 		}
-		c.postevent()
+		fmt.Println("添加了消息")
+		c.messageChan <- *c
 	}
-	select {}
 }
 
 // cron 用于定时执行某些程序用于推送
@@ -40,36 +44,50 @@ func (c *Client) cron() {
 
 // postevent 内部函数 向框架推送event执行方法
 func (c *Client) postevent() {
-	switch c.Message.PostType {
-	case "message":
-		switch c.Message.MessageType {
-		case "group":
-			a := Clientevent{
-				Eventtype: MessageGroup,
-				Message:   c.Message,
+
+	for m := range c.messageChan {
+		fmt.Println(m.Message.PostType)
+		fmt.Println(m.Message.MessageType)
+		switch m.Message.PostType {
+		case "message":
+			switch m.Message.MessageType {
+			case "group":
+				a := Clientevent{
+					Eventtype: MessageGroup,
+					Message:   m.Message,
+				}
+				sendevent(m, a)
+			case "private":
+				a := Clientevent{
+					Eventtype: MessagePrivate,
+					Message:   m.Message,
+				}
+				sendevent(m, a)
 			}
-			sendevent(*c, a)
-		case "private":
+		case "notice":
 			a := Clientevent{
-				Eventtype: MessagePrivate,
-				Message:   c.Message,
+				Eventtype: MessageNotice,
+				Message:   m.Message,
 			}
-			sendevent(*c, a)
+			sendevent(m, a)
 		}
-	case "notice":
-		a := Clientevent{
-			Eventtype: MessageNotice,
-			Message:   c.Message,
-		}
-		sendevent(*c, a)
 	}
 }
+
 func sendevent(client Client, clientevent Clientevent) {
+	var wg sync.WaitGroup // 创建 WaitGroup
+
 	for _, v := range client.EvebtFun {
 		if clientevent.Eventtype == v.Event {
-			go v.Func(client, clientevent.Message)
+			wg.Add(1)              // 增加 WaitGroup 计数
+			go func(f Eventfunc) { // 使用闭包捕获 EventFunc
+				defer wg.Done()                     // 确保在函数结束时调用 Done
+				f.Func(client, clientevent.Message) // 调用事件处理函数
+			}(v) // 将当前 v 传递给闭包
 		}
 	}
+
+	wg.Wait() // 等待所有 goroutine 完成
 }
 
 // too  修改为传入event
