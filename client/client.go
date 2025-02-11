@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/websocket"
 	"log"
 	"sync"
+	"time"
 )
 
 func New(config Clientconfig) (Client, error) {
@@ -71,18 +72,27 @@ func (c *Client) postevent() {
 }
 
 func sendevent(client Client, clientevent Clientevent) {
-	var wg sync.WaitGroup // 创建 WaitGroup
+	var wg sync.WaitGroup               // 创建 WaitGroup
+	timeoutDuration := 10 * time.Second // 设置超时为 10 秒
 	for _, v := range client.EvebtFun {
 		if clientevent.Eventtype == v.Event {
-			wg.Add(1) // 增加 WaitGroup 计数
+			wg.Add(1)              // 增加 WaitGroup 计数
 			go func(f Eventfunc) { // 使用闭包捕获 EventFunc
 				defer wg.Done()                     // 确保在函数结束时调用 Done
 				f.Func(client, clientevent.Message) // 调用事件处理函数
 			}(v) // 将当前 v 传递给闭包
 		}
 	}
+	done := make(chan struct{})
+	go func() {
+		wg.Wait()   // 等待所有 goroutine 完成
+		close(done) // 关闭 done 通道
+	}()
 
-	wg.Wait() // 等待所有 goroutine 完成
+	select {
+	case <-done:
+	case <-time.After(timeoutDuration):
+	}
 }
 
 // too  修改为传入event
