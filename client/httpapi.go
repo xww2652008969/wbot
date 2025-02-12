@@ -244,3 +244,13 @@ func (m *Client) DeleMsg(msgid int64) {
 	d, _ := io.ReadAll(res.Body)
 	m.log.Println(string(d))
 }
+
+// 发送合并消息
+func (m *Client) SendForwardMsg(data []byte) {
+	res, err := utils.Httppost(m.Config.Clienthttp+"/send_forward_msg", nil, bytes.NewBuffer(data))
+	if err != nil {
+		m.log.Println(err)
+	}
+	d, _ := io.ReadAll(res.Body)
+	m.log.Println(string(d))
+}
