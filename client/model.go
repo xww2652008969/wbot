@@ -10,6 +10,7 @@ const (
 	MessageGroup   = 1
 	MessagePrivate = 2
 	MessageNotice  = 3
+	MessageSent    = 4
 )
 
 type Client struct {

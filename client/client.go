@@ -67,6 +67,12 @@ func (c *Client) postevent() {
 				Message:   m.Message,
 			}
 			sendevent(m, a)
+		case "message_sent":
+			a := Clientevent{
+				Eventtype: MessageSent,
+				Message:   m.Message,
+			}
+			sendevent(m, a)
 		}
 	}
 }
@@ -111,6 +117,12 @@ func (c *Client) RegisterPrivateHandle(f Event) {
 func (c *Client) RegisterNoticeHandle(f Event) {
 	var d Eventfunc
 	d.Event = MessageNotice
+	d.Func = f
+	c.EvebtFun = append(c.EvebtFun, d)
+}
+func (c *Client) RegisterMessageSenthandle(f Event) {
+	var d Eventfunc
+	d.Event = MessageSent
 	d.Func = f
 	c.EvebtFun = append(c.EvebtFun, d)
 }
