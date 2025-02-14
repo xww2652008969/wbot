@@ -23,7 +23,7 @@ type Client struct {
 	pushfunc    []Push
 	log         *log.Logger //log
 	updata      []upd       //处理发送消息的
-
+	Interceptor Interceptorfunc
 }
 type Clientconfig struct {
 	Wsurl      string
@@ -79,3 +79,4 @@ type Eventfunc struct {
 
 type Event func(client Client, message Message)
 type Push func(client Client)
+type Interceptorfunc func(c Client, message Message) bool

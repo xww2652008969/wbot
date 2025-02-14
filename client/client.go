@@ -43,8 +43,14 @@ func (c *Client) cron() {
 
 // postevent 内部函数 向框架推送event执行方法
 func (c *Client) postevent() {
-
 	for m := range c.messageChan {
+		fmt.Println("开始处理")
+		if m.Interceptor != nil {
+			fmt.Println("开始处理")
+			if !c.Interceptor(m, m.Message) {
+				continue
+			}
+		}
 		switch m.Message.PostType {
 		case "message":
 			switch m.Message.MessageType {
@@ -129,4 +135,7 @@ func (c *Client) RegisterMessageSenthandle(f Event) {
 
 func (c *Client) RegisterPush(f Push) {
 	c.pushfunc = append(c.pushfunc, f)
+}
+func (c *Client) RegisterInterceptor(f Interceptorfunc) {
+	c.Interceptor = f
 }
