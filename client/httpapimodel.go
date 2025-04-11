@@ -97,6 +97,7 @@ type upd struct {
 		Url       string `json:"url"`
 		Sub_type  int    `json:"sub_Type"`
 		File_size string `json:"file_Size"`
+		Type      string `json:"type"`
 	} `json:"data"`
 }
 type uPMessage struct {

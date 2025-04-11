@@ -147,14 +147,15 @@ func (m *Client) Addreply(id int64) *Client {
 }
 
 // AddMusicCard 添加音乐卡片（不知道如何获取id和只能用qq？？？）
-func (m *Client) AddMusicCard(t string, id int) *Client {
-	var da upd
-	da.Type = "music"
-	da.Data.Id = strconv.Itoa(id)
-	da.Type = t
-	m.updata = append(m.updata, da)
-	return m
-}
+//func (m *Client) AddMusicCard(t string, id int) *Client {
+//	var da upd
+//	da.Type = "music"
+//	da.Data.Id = strconv.Itoa(id)
+//	da.Data.Type = t
+//	fmt.Println(da)
+//	m.updata = append(m.updata, da)
+//	return m
+//}
 
 // AddDice  发送骰子表情(??直接face就可以了的？？)
 func (m *Client) AddDice() *Client {
@@ -195,6 +196,7 @@ func (m *Client) SendPrivateMsg(userid int64, clean ...int64) {
 	}
 	u.Message = m.updata
 	a, _ := json.Marshal(u)
+	m.log.Println(string(a))
 	res, err := utils.Httppost(m.Config.Clienthttp+"/send_private_msg", nil, bytes.NewBuffer(a))
 	if err != nil {
 		m.log.Println(err)
