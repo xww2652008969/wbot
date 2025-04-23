@@ -1,5 +1,5 @@
 package client
 
 func (c *Client) logdebug(v ...interface{}) {
-	c.log.Println(v)
+	c.Log.Println(v)
 }

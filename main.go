@@ -6,10 +6,10 @@ import (
 
 func main() {
 	config := client.Clientconfig{
-		Wsurl:      "ws://192.168.10.209",
+		Wsurl:      "ws://127.0.0.1",
 		Wspost:     "3001",
 		Wsheader:   nil,
-		Clienthttp: "http://192.168.10.209:4000",
+		Clienthttp: "http://127.0.0.1:4000",
 	}
 	c, err := client.New(config)
 	if err != nil {
@@ -21,6 +21,10 @@ func main() {
 
 func te() client.Push {
 	return func(client client.Client) {
-		client.SendPrivateMsg(1271701079)
+		api := client.Newsenapi()
+		c := api.Getchatmessage()
+		c.AddText("xixi")
+		c.UserId = 1271701079
+		api.SendPrivateMsg()
 	}
 }

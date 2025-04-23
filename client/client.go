@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gorilla/websocket"
+	"github.com/xww2652008969/wbot/client/chatmessage"
+	"github.com/xww2652008969/wbot/client/sendapi"
 	"log"
 	"sync"
 	"time"
@@ -18,7 +20,7 @@ func New(config Clientconfig) (Client, error) {
 	}
 	client.Ws = con
 	client.Config = config
-	client.log = log.Default()
+	client.Log = log.Default()
 	client.messageChan = make(chan Client, 10)
 	return client, nil
 }
@@ -44,9 +46,7 @@ func (c *Client) cron() {
 // postevent 内部函数 向框架推送event执行方法
 func (c *Client) postevent() {
 	for m := range c.messageChan {
-		fmt.Println("开始处理")
 		if m.Interceptor != nil {
-			fmt.Println("开始处理")
 			if !c.Interceptor(m, m.Message) {
 				continue
 			}
@@ -138,4 +138,14 @@ func (c *Client) RegisterPush(f Push) {
 }
 func (c *Client) RegisterInterceptor(f Interceptorfunc) {
 	c.Interceptor = f
+}
+func (c *Client) Newsenapi() sendapi.SendAPI {
+	var a sendapi.SendAPI
+	a.SetHttpUrl(c.Config.Clienthttp)
+	a.SetChatmessage(&chatmessage.ChatMessage{
+		Group_id: 0,
+		UserId:   0,
+		Message:  make([]chatmessage.ChatMessageData, 0),
+	})
+	return a
 }

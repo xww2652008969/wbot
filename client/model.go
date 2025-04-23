@@ -14,15 +14,13 @@ const (
 )
 
 type Client struct {
-	Config Clientconfig
-	Ws     *websocket.Conn
-
+	Config      Clientconfig
+	Ws          *websocket.Conn
 	messageChan chan Client
 	Message     Message     //接受到的消息
 	EvebtFun    []Eventfunc //事件总线
 	pushfunc    []Push
-	log         *log.Logger //log
-	updata      []upd       //处理发送消息的
+	Log         *log.Logger //log
 	Interceptor Interceptorfunc
 }
 type Clientconfig struct {
@@ -54,7 +52,6 @@ type Message struct {
 	RawMessage    string `json:"raw_message"`
 	Font          int    `json:"font"`
 	SubType       string `json:"sub_type"`
-	Message       []upd  `json:"message"`
 	MessageFormat string `json:"message_format"`
 	PostType      string `json:"post_type"`
 	GroupId       int64  `json:"group_id"`

@@ -1,4 +1,24 @@
-package client
+package sendapi
+
+import "github.com/xww2652008969/wbot/client/chatmessage"
+
+type SendAPI struct {
+	httpurl     string
+	chatmessage *chatmessage.ChatMessage
+}
+
+func (sendapi *SendAPI) Gethttpurl() string {
+	return sendapi.httpurl
+}
+func (sendapi *SendAPI) Getchatmessage() *chatmessage.ChatMessage {
+	return sendapi.chatmessage
+}
+func (sendapi *SendAPI) SetChatmessage(chatmessage *chatmessage.ChatMessage) {
+	sendapi.chatmessage = chatmessage
+}
+func (sendapi *SendAPI) SetHttpUrl(url string) {
+	sendapi.httpurl = url
+}
 
 // 点赞数据处理 不导出
 type sendlikedata struct {
@@ -39,14 +59,15 @@ type groupMemberInfo struct {
 	Wording string      `json:"wording"`
 	Echo    interface{} `json:"echo"`
 }
-type MsgInfo struct {
-	Status  string      `json:"status"`
-	Retcode int         `json:"retcode"`
-	Data    Message     `json:"data"`
-	Message string      `json:"message"`
-	Wording string      `json:"wording"`
-	Echo    interface{} `json:"echo"`
-}
+
+//type MsgInfo struct {
+//	Status  string      `json:"status"`
+//	Retcode int         `json:"retcode"`
+//	Data    Message     `json:"data"`
+//	Message string      `json:"message"`
+//	Wording string      `json:"wording"`
+//	Echo    interface{} `json:"echo"`
+//}
 
 // 处理获得群成员信息的列表
 type GroupMemberList struct {
@@ -83,27 +104,6 @@ type reqGroupMemberList struct {
 }
 type MsgInforeq struct {
 	MessageId int `json:"message_id"`
-}
-
-// 处理发送信息的结构
-type upd struct {
-	Type string `json:"type"`
-	Data struct {
-		Qq        string `json:"qq"`
-		Name      string `json:"name"`
-		Text      string `json:"text"`
-		File      string `json:"file"`
-		Id        string `json:"id"`
-		Url       string `json:"url"`
-		Sub_type  int    `json:"sub_Type"`
-		File_size string `json:"file_Size"`
-		Type      string `json:"type"`
-	} `json:"data"`
-}
-type uPMessage struct {
-	Group_id string `json:"group_id"`
-	UserId   string `json:"user_id"`
-	Message  []upd  `json:"message"`
 }
 
 // 群聊戳戳数据处理 不导出
