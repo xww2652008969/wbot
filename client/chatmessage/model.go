@@ -5,7 +5,7 @@ type ChatMessageData struct {
 	Data messagePayload `json:"data"`
 }
 type messagePayload struct {
-	Qq        int64  `json:"qq,omitempty"`
+	Qq        string `json:"qq,omitempty"`
 	Name      string `json:"name,omitempty"`
 	Text      string `json:"text,omitempty"`
 	File      string `json:"file,omitempty"`
