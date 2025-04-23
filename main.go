@@ -15,16 +15,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	c.RegisterPush(te())
 	c.Run()
-}
 
-func te() client.Push {
-	return func(client client.Client) {
-		api := client.Newsenapi()
-		c := api.Getchatmessage()
-		c.AddText("xixi")
-		c.UserId = 1271701079
-		api.SendPrivateMsg()
-	}
 }

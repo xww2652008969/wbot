@@ -2,6 +2,7 @@ package client
 
 import (
 	"github.com/gorilla/websocket"
+	"github.com/xww2652008969/wbot/client/chatmessage"
 	"log"
 	"net/http"
 )
@@ -49,15 +50,16 @@ type Message struct {
 		Card     string `json:"card"`
 		Role     string `json:"role"`
 	} `json:"sender"`
-	RawMessage    string `json:"raw_message"`
-	Font          int    `json:"font"`
-	SubType       string `json:"sub_type"`
-	MessageFormat string `json:"message_format"`
-	PostType      string `json:"post_type"`
-	GroupId       int64  `json:"group_id"`
-	NoticeType    string `json:"notice_type,omitempty"`
-	TargetId      int64  `json:"target_id,omitempty"`
-	SenderId      int    `json:"sender_id,omitempty"`
+	Message       []chatmessage.ChatMessageData `json:"message"`
+	RawMessage    string                        `json:"raw_message"`
+	Font          int                           `json:"font"`
+	SubType       string                        `json:"sub_type"`
+	MessageFormat string                        `json:"message_format"`
+	PostType      string                        `json:"post_type"`
+	GroupId       int64                         `json:"group_id"`
+	NoticeType    string                        `json:"notice_type,omitempty"`
+	TargetId      int64                         `json:"target_id,omitempty"`
+	SenderId      int                           `json:"sender_id,omitempty"`
 	RawInfo       []struct {
 		Col  string `json:"col,omitempty"`
 		Nm   string `json:"nm,omitempty"`
