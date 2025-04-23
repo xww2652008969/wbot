@@ -11,9 +11,6 @@ import (
 
 // SendGroupMsg 发送私聊群聊信息
 func (sendapi *SendAPI) SendGroupMsg() (*http.Response, error) {
-	if sendapi.chatmessage.UserId == 0 {
-		return nil, nil
-	}
 	postdata, _ := json.Marshal(sendapi.chatmessage)
 	return utils.Httppost(sendapi.httpurl+"/send_group_msg", nil, bytes.NewBuffer(postdata))
 }
