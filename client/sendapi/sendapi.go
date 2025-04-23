@@ -79,7 +79,7 @@ func (sendapi *SendAPI) GetGroupMemberList(id int64) (GroupMemberList, error) {
 }
 
 // GetGroupNemberInfo 获取群成员信息
-func (sendapi *SendAPI) GetGroupNemberInfo(groupid, user int64) (groupMemberInfo, error) {
+func (sendapi *SendAPI) GetGroupMemberInfo(groupid, user int64) (groupMemberInfo, error) {
 	var g groupMemberInfo
 	req := reqgroupMemberInfo{
 		GroupId: groupid,
