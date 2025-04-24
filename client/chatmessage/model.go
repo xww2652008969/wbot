@@ -14,6 +14,7 @@ type messagePayload struct {
 	Sub_type  int    `json:"sub_Type,omitempty"`
 	File_size string `json:"file_Size,omitempty"`
 	Type      string `json:"type,omitempty"`
+	Data      string `json:"data,omitempty"`
 }
 type ChatMessage struct {
 	Group_id int64             `json:"group_id"`
