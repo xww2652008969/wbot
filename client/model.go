@@ -3,8 +3,9 @@ package client
 import (
 	"github.com/gorilla/websocket"
 	"github.com/xww2652008969/wbot/client/chatmessage"
-	"log"
 	"net/http"
+	"sync"
+	"time"
 )
 
 const (
@@ -15,27 +16,38 @@ const (
 )
 
 type Client struct {
-	Config      Clientconfig
-	Ws          *websocket.Conn
-	messageChan chan Client
-	Message     Message     //接受到的消息
-	EvebtFun    []Eventfunc //事件总线
-	pushfunc    []Push
-	Log         *log.Logger //log
-	Interceptor Interceptorfunc
+	Config          Clientconfig
+	Ws              *websocket.Conn
+	messageChan     chan Client
+	Message         Message  //接受到的消息
+	Pluginslist     []Plugin //事件总线
+	reconnectMutex  sync.Mutex
+	currentAttempts int
+	stopChan        chan struct{}
 }
 type Clientconfig struct {
-	Wsurl      string
-	Wspost     string
-	Wsheader   http.Header
-	Clienthttp string
+	Wsurl                string
+	Wspost               string
+	Wstoken              string
+	wshead               http.Header
+	Clienthttp           string
+	Clienthttptoken      string
+	MaxReconnect         int           // 最大重连次数，默认5次
+	ReconnectInterval    time.Duration // 初始重连间隔，默认1秒
+	MaxReconnectInterval time.Duration // 最大重连间隔，默认30秒
 }
 
-type Clientevent struct {
-	Eventtype int
-	Message   Message
+// v2
+type Plugin interface {
+	PluginName() string
+	PluginVersion() string
+	PluginAuthor() string
+	GroupHandle(client Client, message Message)
+	PrivateHandle(client Client, message Message)
+	MessageSendhandle(client Client, message Message)
+	NoticeHandle(client Client, message Message)
+	Push(client *Client)
 }
-
 type Message struct {
 	SelfId      int64  `json:"self_id"`
 	UserId      int64  `json:"user_id"`
@@ -71,11 +83,3 @@ type Message struct {
 		Tp   string `json:"tp,omitempty"`
 	} `json:"raw_info,omitempty"`
 }
-type Eventfunc struct {
-	Func  Event
-	Event int
-}
-
-type Event func(client Client, message Message)
-type Push func(client Client)
-type Interceptorfunc func(c Client, message Message) bool

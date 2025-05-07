@@ -1,14 +1,24 @@
 package sendapi
 
-import "github.com/xww2652008969/wbot/client/chatmessage"
+import (
+	"github.com/xww2652008969/wbot/client/chatmessage"
+	"log"
+	"net/http"
+)
 
 type SendAPI struct {
-	httpurl     string
-	chatmessage *chatmessage.ChatMessage
+	httpurl           string
+	httpAuthorization string
+	httpClient        *http.Client
+	chatmessage       *chatmessage.ChatMessage
+	log               *log.Logger
 }
 
 func (sendapi *SendAPI) Gethttpurl() string {
 	return sendapi.httpurl
+}
+func (sendapi *SendAPI) GethttpAuthorization() string {
+	return sendapi.httpAuthorization
 }
 func (sendapi *SendAPI) Getchatmessage() *chatmessage.ChatMessage {
 	return sendapi.chatmessage
@@ -18,6 +28,15 @@ func (sendapi *SendAPI) SetChatmessage(chatmessage *chatmessage.ChatMessage) {
 }
 func (sendapi *SendAPI) SetHttpUrl(url string) {
 	sendapi.httpurl = url
+}
+func (sendapi *SendAPI) SetHttpAuthorization(httpAuthorization string) {
+	sendapi.httpAuthorization = httpAuthorization
+}
+func (sendapi *SendAPI) SetHttpClient(client *http.Client) {
+	sendapi.httpClient = client
+}
+func (sendapi *SendAPI) GetHttpClient() *http.Client {
+	return sendapi.httpClient
 }
 
 // 点赞数据处理 不导出
