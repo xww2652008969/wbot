@@ -104,6 +104,9 @@ func (c *Client) handleError(err error) {
 
 // cron 用于定时执行某些程序用于推送
 func (c *Client) cron() {
+	if len(c.Pluginslist) < 1 {
+		return
+	}
 	for _, v := range c.Pluginslist {
 		go v.Push(c) // 传递指向 Client 的指针，而不是复制
 	}
@@ -135,6 +138,9 @@ func (c *Client) Close() {
 func sendevent(client *Client, Event int) {
 	var wg sync.WaitGroup                // 创建 WaitGroup
 	timeoutDuration := 100 * time.Second // 设置超时为 100 秒
+	if len(client.Pluginslist) < 1 {
+		return
+	}
 	for _, v := range client.Pluginslist {
 		wg.Add(1)
 		go func(plugins Plugin) {
