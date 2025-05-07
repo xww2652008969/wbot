@@ -23,7 +23,6 @@ type Client struct {
 	Pluginslist     []Plugin //事件总线
 	reconnectMutex  sync.Mutex
 	currentAttempts int
-	stopChan        chan struct{}
 }
 type Clientconfig struct {
 	Wsurl                string

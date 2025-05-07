@@ -25,7 +25,6 @@ func New(config Clientconfig) (*Client, error) {
 	client := &Client{
 		Config:      config,
 		messageChan: make(chan Client, 10),
-		stopChan:    make(chan struct{}),
 	}
 	if config.Wstoken != "" {
 		client.Config.wshead = make(http.Header)
@@ -64,19 +63,14 @@ func (c *Client) Run() {
 	go c.cron()
 	go c.postevent()
 	for {
-		select {
-		case <-c.stopChan:
-			return
-		default:
-			err := c.Ws.ReadJSON(&c.Message)
-			if err != nil {
-				if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-					c.handleError(err)
-				}
-				continue
+		err := c.Ws.ReadJSON(&c.Message)
+		if err != nil {
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+				c.handleError(err)
 			}
-			c.messageChan <- *c
+			continue
 		}
+		c.messageChan <- *c
 	}
 }
 
@@ -131,7 +125,6 @@ func (c *Client) postevent() {
 	}
 }
 func (c *Client) Close() {
-	close(c.stopChan)
 	c.Ws.Close()
 }
 
