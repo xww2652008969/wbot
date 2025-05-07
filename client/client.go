@@ -25,6 +25,7 @@ func New(config Clientconfig) (*Client, error) {
 	client := &Client{
 		Config:      config,
 		messageChan: make(chan Client, 10),
+		stopChan:    make(chan struct{}),
 	}
 	if config.Wstoken != "" {
 		client.Config.wshead = make(http.Header)
@@ -32,7 +33,7 @@ func New(config Clientconfig) (*Client, error) {
 	}
 	// 初始化连接
 	if err := client.connect(); err != nil {
-		return nil, err
+		return client, err
 	}
 	return client, nil
 }
@@ -60,17 +61,25 @@ func (c *Client) connect() error {
 	return nil
 }
 func (c *Client) Run() {
+	if c.Ws == nil {
+		panic("没有建立ws")
+	}
 	go c.cron()
 	go c.postevent()
 	for {
-		err := c.Ws.ReadJSON(&c.Message)
-		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				c.handleError(err)
+		select {
+		case <-c.stopChan:
+			return
+		default:
+			err := c.Ws.ReadJSON(&c.Message)
+			if err != nil {
+				if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+					c.handleError(err)
+				}
+				continue
 			}
-			continue
+			c.messageChan <- *c
 		}
-		c.messageChan <- *c
 	}
 }
 
@@ -125,6 +134,7 @@ func (c *Client) postevent() {
 	}
 }
 func (c *Client) Close() {
+	close(c.stopChan)
 	c.Ws.Close()
 }
 
