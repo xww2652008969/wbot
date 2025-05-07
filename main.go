@@ -8,7 +8,6 @@ func main() {
 	config := client.Clientconfig{
 		Wsurl:      "ws://127.0.0.1",
 		Wspost:     "3001",
-		Wsheader:   nil,
 		Clienthttp: "http://127.0.0.1:4000",
 	}
 	c, err := client.New(config)
@@ -16,5 +15,4 @@ func main() {
 		panic(err)
 	}
 	c.Run()
-
 }
