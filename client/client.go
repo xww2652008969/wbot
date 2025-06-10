@@ -1,6 +1,7 @@
 package client
 
 import (
+	"fmt"
 	"github.com/gorilla/websocket"
 	"github.com/xww2652008969/wbot/client/chatmessage"
 	"github.com/xww2652008969/wbot/client/sendapi"
@@ -12,9 +13,6 @@ import (
 // New 构造函数
 func New(config Clientconfig) (*Client, error) {
 	// 设置默认值
-	if config.MaxReconnect == 0 {
-		config.MaxReconnect = 5
-	}
 	if config.ReconnectInterval == 0 {
 		config.ReconnectInterval = 1 * time.Second
 	}
@@ -87,8 +85,9 @@ func (c *Client) Run() {
 func (c *Client) handleError(err error) {
 	c.reconnectMutex.Lock()
 	defer c.reconnectMutex.Unlock()
+	fmt.Println(time.Now(), "开始重连")
 	c.currentAttempts++
-	if c.currentAttempts > c.Config.MaxReconnect {
+	if c.currentAttempts > c.Config.MaxReconnect && c.Config.MaxReconnect >= 0 {
 		panic("超过最大重连次数")
 	}
 
